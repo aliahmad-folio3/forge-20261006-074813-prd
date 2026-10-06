@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ mode|capitalize }} · Hush{% endblock %}
+{% block content %}
+<div class="card auth-card">
+  <h1>{{ 'Sign up' if mode == 'signup' else 'Log in' }}</h1>
+  {% if error %}
+    <div id="error" class="error" role="alert">{{ error }}</div>
+  {% endif %}
+  <form method="post" action="{{ '/signup' if mode == 'signup' else '/login' }}">
+    <div class="field">
+      <label class="label" for="email">Email</label>
+      <input class="input" id="email" name="email" type="email" value="{{ email or '' }}" required>
+    </div>
+    <div class="field">
+      <label class="label" for="password">Password</label>
+      <input class="input" id="password" name="password" type="password" required>
+    </div>
+    <div class="privacy-note">Nobody will ever see your email. Only your alias is shown publicly.</div>
+    <button class="btn btn-primary btn-block" id="submit" type="submit">{{ 'Sign up' if mode == 'signup' else 'Log in' }}</button>
+  </form>
+  {% if mode == 'signup' %}
+    <p class="subtitle">Already have an account? <a href="/login">Log in</a></p>
+  {% else %}
+    <p class="subtitle">New here? <a href="/signup">Sign up</a></p>
+  {% endif %}
+</div>
+{% endblock %}

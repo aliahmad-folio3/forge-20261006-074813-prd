@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Profile · Hush{% endblock %}
+{% block content %}
+<h1 class="page-title">{{ alias }}</h1>
+<p class="subtitle">Joined {{ joined }} · {{ post_count }} posts · {{ reply_count }} replies · {{ likes_received }} likes received</p>
+
+<form class="card" method="post" action="/profile/alias">
+  <button class="btn btn-secondary" id="new-alias" type="submit">Get a new alias</button>
+</form>
+{% if alias_error %}
+  <div id="error" class="error" role="alert">{{ alias_error }}</div>
+{% endif %}
+
+<div class="tabs" role="tablist">
+  <a class="btn btn-ghost btn-sm {{ 'active' if tab == 'posts' else '' }}" id="tab-posts" href="/profile?tab=posts">My posts</a>
+  <a class="btn btn-ghost btn-sm {{ 'active' if tab == 'replies' else '' }}" id="tab-replies" href="/profile?tab=replies">My replies</a>
+  <a class="btn btn-ghost btn-sm {{ 'active' if tab == 'likes' else '' }}" id="tab-likes" href="/profile?tab=likes">My likes</a>
+</div>
+
+{% if tab == 'posts' %}
+  {% if posts %}
+  <ul class="feed" id="feed">
+    {% for post in posts %}
+      {% set next_url = '/profile?tab=posts' %}
+      {% include "_post.html" %}
+    {% endfor %}
+  </ul>
+  {% if next_before %}<div class="pager"><a class="btn btn-secondary" id="load-older" href="/profile?tab=posts&before={{ next_before }}">Load older</a></div>{% endif %}
+  {% else %}
+  <div class="empty-state" id="empty-state"><p>No posts yet.</p></div>
+  {% endif %}
+{% elif tab == 'replies' %}
+  {% if replies %}
+  <ul class="replies">
+    {% for reply in replies %}
+    <li class="whisper">
+      <div class="whisper-meta"><span class="time">{{ reply.rel_time }}</span></div>
+      <p class="hint">Replying to: {{ reply.post_text }}</p>
+      <p class="whisper-text">{{ reply.text }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+  {% if next_before %}<div class="pager"><a class="btn btn-secondary" id="load-older" href="/profile?tab=replies&before={{ next_before }}">Load older</a></div>{% endif %}
+  {% else %}
+  <div class="empty-state" id="empty-state"><p>No replies yet.</p></div>
+  {% endif %}
+{% else %}
+  {% if posts %}
+  <ul class="feed" id="feed">
+    {% for post in posts %}
+      {% set next_url = '/profile?tab=likes' %}
+      {% include "_post.html" %}
+    {% endfor %}
+  </ul>
+  {% if next_before %}<div class="pager"><a class="btn btn-secondary" id="load-older" href="/profile?tab=likes&before={{ next_before }}">Load older</a></div>{% endif %}
+  {% else %}
+  <div class="empty-state" id="empty-state"><p>No likes yet.</p></div>
+  {% endif %}
+{% endif %}
+{% endblock %}

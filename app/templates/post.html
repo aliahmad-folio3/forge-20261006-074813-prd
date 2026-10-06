@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Post · Hush{% endblock %}
+{% block content %}
+<ul class="feed" id="post-detail">
+  {% set post = post %}
+  {% set next_url = next_url %}
+  {% include "_post.html" %}
+</ul>
+{% if error %}
+  <div id="error" class="error" role="alert">{{ error }}</div>
+{% endif %}
+<h2>Replies</h2>
+<form class="card" method="post" action="/post/{{ post.id }}/reply">
+  <div class="field">
+    <label class="label" for="reply-text">Your reply</label>
+    <textarea class="input" id="reply-text" name="text" rows="2" maxlength="300" placeholder="Reply quietly…"></textarea>
+  </div>
+  <div class="composer-row">
+    <span class="counter" id="reply-char-count">0 / 300</span>
+    <button class="btn btn-primary" id="reply-submit" type="submit">Reply</button>
+  </div>
+</form>
+{% if replies %}
+<ul class="replies">
+  {% for reply in replies %}
+  <li class="whisper reply-item">
+    <div class="whisper-meta">
+      <a class="alias" href="/u/{{ reply.alias }}">{{ reply.alias }}</a>
+      <span class="time">{{ reply.rel_time }}</span>
+    </div>
+    <p class="whisper-text">{{ reply.text }}</p>
+    <div class="whisper-actions">
+      <form class="inline-form" method="post" action="/reply/{{ reply.id }}/like">
+        <input type="hidden" name="next" value="/post/{{ post.id }}">
+        {% if reply.liked_by_me %}
+        <button class="btn btn-ghost btn-sm liked" type="submit" aria-pressed="true">♥ {{ reply.like_count }}</button>
+        {% else %}
+        <button class="btn btn-ghost btn-sm" type="submit" aria-pressed="false">♥ {{ reply.like_count }}</button>
+        {% endif %}
+      </form>
+      {% if reply.is_mine %}
+      <form class="inline-form" method="post" action="/reply/{{ reply.id }}/delete">
+        <input type="hidden" name="next" value="/post/{{ post.id }}">
+        <button class="btn btn-ghost btn-sm danger" type="submit">Delete</button>
+      </form>
+      {% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state" id="empty-state"><p>No replies yet.</p></div>
+{% endif %}
+<script>
+(function(){
+  var ta = document.getElementById('reply-text');
+  var counter = document.getElementById('reply-char-count');
+  if (ta && counter) {
+    var update = function(){ counter.textContent = ta.value.length + ' / 300'; };
+    ta.addEventListener('input', update);
+    update();
+  }
+})();
+</script>
+{% endblock %}

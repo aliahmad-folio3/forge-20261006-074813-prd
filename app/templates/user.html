@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ alias }} · Hush{% endblock %}
+{% block content %}
+<h1 class="page-title">{{ alias }}</h1>
+<p class="subtitle">Joined {{ joined }} · {{ post_count }} posts · {{ likes_received }} likes received</p>
+
+{% if posts %}
+<ul class="feed" id="feed">
+  {% for post in posts %}
+    {% set next_url = '/u/' + alias %}
+    {% include "_post.html" %}
+  {% endfor %}
+</ul>
+{% if next_before %}<div class="pager"><a class="btn btn-secondary" id="load-older" href="/u/{{ alias }}?before={{ next_before }}">Load older</a></div>{% endif %}
+{% else %}
+<div class="empty-state" id="empty-state"><p>No posts yet.</p></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+<li class="whisper">
+  <div class="whisper-meta">
+    <a class="alias" href="/u/{{ post.alias }}">{{ post.alias }}</a>
+    <span class="time">{{ post.rel_time }}</span>
+  </div>
+  <p class="whisper-text">{{ post.text }}</p>
+  <div class="whisper-actions">
+    <form class="inline-form" method="post" action="/post/{{ post.id }}/like">
+      <input type="hidden" name="next" value="{{ next_url }}">
+      {% if post.liked_by_me %}
+      <button class="btn btn-ghost btn-sm liked" type="submit" name="unlike" value="1" aria-pressed="true">♥ {{ post.like_count }}</button>
+      {% else %}
+      <button class="btn btn-ghost btn-sm" type="submit" aria-pressed="false">♥ {{ post.like_count }}</button>
+      {% endif %}
+    </form>
+    <a class="btn btn-ghost btn-sm" href="/post/{{ post.id }}">💬 {{ post.reply_count }} replies</a>
+    {% if post.is_mine %}
+    <form class="inline-form" method="post" action="/post/{{ post.id }}/delete">
+      <input type="hidden" name="next" value="{{ next_url }}">
+      <button class="btn btn-ghost btn-sm danger" type="submit">Delete</button>
+    </form>
+    {% else %}
+    <form class="inline-form" method="post" action="/post/{{ post.id }}/report">
+      <input type="hidden" name="next" value="{{ next_url }}">
+      <button class="btn btn-ghost btn-sm" type="submit">Report</button>
+    </form>
+    {% endif %}
+  </div>
+</li>

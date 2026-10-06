@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Feed · Hush{% endblock %}
+{% block content %}
+<h1 class="page-title">The feed</h1>
+<p class="subtitle">Whispers from everyone, newest first.</p>
+<form class="card composer" method="post" action="/">
+  <div class="field">
+    <label class="label" for="post-text">Your whisper</label>
+    <textarea class="input" id="post-text" name="text" rows="3" maxlength="500" placeholder="Say it quietly…"></textarea>
+  </div>
+  <div class="composer-row">
+    <span class="counter" id="char-count">0 / 500</span>
+    <button class="btn btn-primary" id="post-submit" type="submit">Post</button>
+  </div>
+</form>
+{% if error %}
+  <div id="error" class="error" role="alert">{{ error }}</div>
+{% endif %}
+{% if posts %}
+<ul class="feed" id="feed">
+  {% for post in posts %}
+    {% include "_post.html" %}
+  {% endfor %}
+</ul>
+{% if next_before %}
+<div class="pager"><a class="btn btn-secondary" id="load-older" href="/?before={{ next_before }}">Load older</a></div>
+{% endif %}
+{% else %}
+<div class="empty-state" id="empty-state"><div class="empty-icon" aria-hidden="true">☾</div><p>It's quiet here. Write the first whisper.</p></div>
+{% endif %}
+<script>
+(function(){
+  var ta = document.getElementById('post-text');
+  var counter = document.getElementById('char-count');
+  if (ta && counter) {
+    var update = function(){ counter.textContent = ta.value.length + ' / 500'; };
+    ta.addEventListener('input', update);
+    update();
+  }
+})();
+</script>
+{% endblock %}

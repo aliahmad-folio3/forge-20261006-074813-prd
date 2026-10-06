@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feed · Hush</title>
+<link rel="stylesheet" href="/static/theme.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>Hush</a>
+  <nav class="nav" aria-label="Main">
+    <a class="nav-link" href="/profile"><span class="alias">QuietFox42</span></a>
+    <form class="inline-form" method="post" action="/logout"><button class="btn btn-ghost btn-sm" type="submit">Log out</button></form>
+  </nav>
+</header>
+<main class="shell">
+  <h1 class="page-title">The feed</h1>
+  <p class="subtitle">Whispers from everyone, newest first.</p>
+  <form class="card composer" method="post" action="/">
+    <div class="field">
+      <label class="label" for="post-text">Your whisper</label>
+      <textarea class="input" id="post-text" name="text" rows="3" maxlength="500" placeholder="Say it quietly…"></textarea>
+    </div>
+    <div class="composer-row">
+      <span class="counter" id="char-count">0 / 500</span>
+      <button class="btn btn-primary" id="post-submit" type="submit">Post</button>
+    </div>
+  </form>
+  <div id="error" class="error" role="alert">Your whisper can't be empty.</div>
+  <ul class="feed" id="feed">
+    <li class="whisper">
+      <div class="whisper-meta"><a class="alias" href="/u/SilentOwl07">SilentOwl07</a><span class="time">5m ago</span></div>
+      <p class="whisper-text">Someone in 4B keeps leaving &lt;3 notes on the fridge.</p>
+      <div class="whisper-actions">
+        <form class="inline-form" method="post" action="/post/12/like"><button class="btn btn-ghost btn-sm liked" aria-pressed="true">♥ 3</button></form>
+        <a class="btn btn-ghost btn-sm" href="/post/12">💬 2 replies</a>
+        <form class="inline-form" method="post" action="/post/12/report"><button class="btn btn-ghost btn-sm">Report</button></form>
+      </div>
+    </li>
+  </ul>
+  <div class="pager"><a class="btn btn-secondary" href="/?before=12">Load older</a></div>
+  <!-- empty: <div class="empty-state" id="empty-state"><div class="empty-icon" aria-hidden="true">☾</div><p>It's quiet here. Write the first whisper.</p></div> -->
+</main>
+<footer class="footer">Hush · only your alias is ever shown</footer>
+</body>
+</html>

@@ -1,0 +1,10 @@
+.git
+.forge
+judge
+tests_hidden
+__pycache__
+.pytest_cache
+*.pyc
+runs
+output
+evidence

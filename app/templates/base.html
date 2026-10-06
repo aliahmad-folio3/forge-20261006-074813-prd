@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Hush{% endblock %}</title>
+<link rel="stylesheet" href="/static/theme.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span>Hush</a>
+  <nav class="nav" aria-label="Main">
+    {% if current_alias %}
+      <a class="nav-link" href="/profile"><span class="alias">{{ current_alias }}</span></a>
+      <form class="inline-form" method="post" action="/logout">
+        <button class="btn btn-ghost btn-sm" type="submit">Log out</button>
+      </form>
+    {% else %}
+      <a class="nav-link" href="/login">Log in</a>
+      <a class="nav-link" href="/signup">Sign up</a>
+    {% endif %}
+  </nav>
+</header>
+<main class="shell">
+{% block content %}{% endblock %}
+</main>
+<footer class="footer">Hush · only your alias is ever shown</footer>
+</body>
+</html>
